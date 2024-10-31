@@ -1,0 +1,12 @@
+.alert{
+    color: var(--white);
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.7rem;
+    font-weight: 400;
+    background: transparent;
+    border: .1rem solid #fb0404;
+    border-radius: 1rem;
+    text-transform: uppercase;
+    
+}
