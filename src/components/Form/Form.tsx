@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { countries } from '../../data/conutries'
-import styles from './Form.module.css';
+import { countries } from '../../data/conutries';
 import type { SearchType } from '../../types';
 import Alert from '../Alert/Alert';
+import styles from './Form.module.css';
 
 
-const Form = () => {
+type FormProps = {
+  fetchWeather:(searh: SearchType) => Promise<void>
+}
+const Form = ({fetchWeather}:FormProps) => {
 
   const [search, setSearch] = useState<SearchType>({
     city: '',
@@ -27,6 +30,8 @@ const Form = () => {
       setAlert('Los campos del formulario no pueden ir vacios')
       return
     }
+
+    fetchWeather(search)
   }
 
   return (
