@@ -1,0 +1,29 @@
+.container{
+    border-radius: 1rem;
+    background-color: var(--white);
+    color: #000;
+    text-align: center;
+    padding: 1rem;
+    
+}
+
+.temp{
+    font-size: 4rem;
+    font-weight: 900;
+    margin: 0;
+}
+
+.container_temp{
+    display: flex;
+    flex: row;
+    justify-content: space-around;
+}
+
+.container_temp p{
+    font-weight: 900;
+}
+
+.container_temp span{
+    font-weight: 400;
+}
+

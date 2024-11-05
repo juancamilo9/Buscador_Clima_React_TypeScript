@@ -1,9 +1,9 @@
 
-import { SearchType } from "../types"
-import axios from "axios"
-import {object,number,string,parse,InferOutput} from 'valibot'
+import axios from "axios";
+import { InferOutput, number, object, parse, string } from 'valibot';
+import { SearchType } from "../types";
 //import {z} from 'zod'
-// import { Weather } from "../types"
+import { useMemo, useState } from "react";
 
 // type guards
 // const isWeatherResult = (weather: unknown): weather is Weather => {
@@ -39,11 +39,20 @@ const schemaWeather = object({
     })
 })
 
-type Weather = InferOutput<typeof schemaWeather>
+export type Weather = InferOutput<typeof schemaWeather>
 
 export default function useWeather() {
 
-
+    const [weather, setWeather] = useState<Weather>(
+        {
+            name: '',
+            main: {
+                temp: 0,
+                temp_max: 0,
+                temp_min: 0,
+            }
+        }
+    )
 
     const fetchWeather = async (search: SearchType) => {
         const appId = import.meta.env.VITE_APPI_KEY
@@ -75,16 +84,22 @@ export default function useWeather() {
 
             // Valibot
             const { data: weatherResult } = await axios(callCurrentWeather)
-            const result = parse(schemaWeather,weatherResult)
-            console.log(result)
-
+            const result = parse(schemaWeather, weatherResult)
+            if(typeof result === 'object'){
+                setWeather(result)
+            }
+            console.log(weather)
 
         } catch (error) {
             console.log('Ocurrio algo inesperado:', error)
         }
     }
 
+    const hasWeatherData = useMemo(()=>weather.name,[weather])
+
     return {
-        fetchWeather
+        weather,
+        fetchWeather,
+        hasWeatherData
     }
 }
