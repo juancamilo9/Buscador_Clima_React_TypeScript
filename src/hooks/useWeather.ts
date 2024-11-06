@@ -56,6 +56,8 @@ export default function useWeather() {
 
     const [loading, setLoading] = useState(false)
 
+    const [notFound, setNotFound] = useState(false)
+
     const fetchWeather = async (search: SearchType) => {
         const appId = import.meta.env.VITE_APPI_KEY
         setLoading(true)
@@ -66,6 +68,12 @@ export default function useWeather() {
 
             // consultamos a la api para obtener una respuesta
             const { data } = await axios(callGeoUrl)
+
+            // Comprobar si no se encontro una ciudad
+            if(!data[0]){
+                setNotFound(true)
+                return
+            }
 
             // obtenemos la latitud y la longitud de la respesuta para poder llamar nuevametne a la api
             const lat = data[0].lat
@@ -89,23 +97,25 @@ export default function useWeather() {
             // Valibot
             const { data: weatherResult } = await axios(callCurrentWeather)
             const result = parse(schemaWeather, weatherResult)
-            if(typeof result === 'object'){
+            if (typeof result === 'object') {
                 setWeather(result)
             }
             console.log(weather)
 
         } catch (error) {
-            console.log('Ocurrio algo inesperado:', error)
-        } finally{
+            console.log(error)
+        } finally {
             setLoading(false)
         }
     }
 
-    const hasWeatherData = useMemo(()=>weather.name,[weather])
+    const hasWeatherData = useMemo(() => weather.name, [weather])
 
     return {
+        
         weather,
         loading,
+        notFound,
         fetchWeather,
         hasWeatherData
     }
