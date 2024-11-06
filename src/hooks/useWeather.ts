@@ -64,7 +64,7 @@ export default function useWeather() {
         setWeather(initialState)
         try {
             // generamos la url para un llamado a la api Geo
-            const callGeoUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${search.city},${search.country}&appid=${appId}`
+            const callGeoUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${search.city},${search.country}&appid=${appId}`
 
             // consultamos a la api para obtener una respuesta
             const { data } = await axios(callGeoUrl)
